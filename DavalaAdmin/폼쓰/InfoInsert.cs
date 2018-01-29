@@ -29,6 +29,8 @@ namespace DavalaAdmin.폼쓰
             Properties.Settings.Default.ftpID = textBoxIDFTP.Text;
             Properties.Settings.Default.ftpPW = textBoxPasswordFTP.Text;
 
+            Properties.Settings.Default.Save();
+
             this.Close();
         }
     }
