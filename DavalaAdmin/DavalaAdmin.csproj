@@ -31,7 +31,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DavalaIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,14 +52,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="mainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="mainForm.Designer.cs">
+      <DependentUpon>mainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="데이터베이쓰\BaseManagement.cs" />
+    <Compile Include="데이터베이쓰\BrandManagement.cs" />
+    <Compile Include="데이터베이쓰\CategoryManagement.cs" />
+    <Compile Include="데이터베이쓰\FTPManager.cs" />
+    <Compile Include="데이터베이쓰\ProductManagement.cs" />
+    <Compile Include="데이터포맷들\CategoryFormat.cs" />
+    <Compile Include="데이터포맷들\ImageInfo.cs" />
+    <Compile Include="폼쓰\CategoryEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼쓰\CategoryEditor.Designer.cs">
+      <DependentUpon>CategoryEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼쓰\ImageViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼쓰\ImageViewer.Designer.cs">
+      <DependentUpon>ImageViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼쓰\BrandEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼쓰\BrandEditor.Designer.cs">
+      <DependentUpon>BrandEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="폼쓰\InfoInsert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="폼쓰\InfoInsert.Designer.cs">
+      <DependentUpon>InfoInsert.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="mainForm.resx">
+      <DependentUpon>mainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -61,7 +102,21 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="폼쓰\CategoryEditor.resx">
+      <DependentUpon>CategoryEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼쓰\ImageViewer.resx">
+      <DependentUpon>ImageViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼쓰\BrandEditor.resx">
+      <DependentUpon>BrandEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="폼쓰\InfoInsert.resx">
+      <DependentUpon>InfoInsert.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -74,6 +129,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="리쏘쓰\이미지추가하기-이미지.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DavalaIcon.ico" />
+    <None Include="리쏘쓰\빼기버튼.png" />
+    <None Include="리쏘쓰\더하기버튼.png" />
+    <None Include="리쏘쓰\그리드뷰용.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
