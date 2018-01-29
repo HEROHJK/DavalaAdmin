@@ -175,6 +175,7 @@ namespace DavalaAdmin
             }
 
             return info;
+            //..
         }
 
         private string GetExtension(string path)
