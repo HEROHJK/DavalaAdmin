@@ -17,7 +17,7 @@ namespace DavalaAdmin
     public partial class mainForm : Form
     {
         static string imageExetensions = "그림 파일(*.jpg, *.gif, *.bmp, *.png) | *.jpg; *.gif; *.bmp; *.png;";
-        static string dbLoginInfo = "";
+        public static string dbLoginInfo = "";
         public mainForm()
         {
             InitializeComponent();
@@ -99,7 +99,7 @@ namespace DavalaAdmin
             //등록 프로세서
             ProductManagement pm = new ProductManagement(dbLoginInfo);
             FTPManager fm = new FTPManager(Properties.Settings.Default.ftpAddress, Properties.Settings.Default.ftpID, Properties.Settings.Default.ftpPW, Properties.Settings.Default.ftpPort);
-            int index;
+            int index, infoIndex;
 
             //1. DB에 제품정보를 등록한다.
             index = pm.InsertProductData(textBoxProductName.Text,GetIndex("브랜드"),GetIndex("카테고리"),Convert.ToDecimal(textBoxPrice.Text));
@@ -108,12 +108,21 @@ namespace DavalaAdmin
                 MessageBox.Show("제품 등록에 실패하였습니다.");
                 return;
             }
+            //1-1. 제품 추가정보를 등록한다
+            infoIndex = pm.InsertProductSubData(index, textBoxDiscount.Text);
+            if (infoIndex == -1)
+            {
+                MessageBox.Show("제품정보 등록에 실패하였습니다.");
+                pm.DeleteProductData(index);
+                return;
+            }
             //2. FTP에 올릴파일이름을 추출한다.
             ImageInfo info = GetImageInfo(index);
             //3. FTP에 파일을 업로드한다.
             if(!fm.UploadFiles(info.paths, info.names))
             {
                 MessageBox.Show("이미지파일 업로드에 실패하였습니다.");
+                pm.DeleteProductSubData(infoIndex);
                 pm.DeleteProductData(index);
                 return;
             }
@@ -121,6 +130,7 @@ namespace DavalaAdmin
             if(!pm.InsertProductImages(info.urls, index))
             {
                 MessageBox.Show("이미지정보 등록에 실패하였습니다.");
+                pm.DeleteProductSubData(infoIndex);
                 pm.DeleteProductData(index);
                 fm.DeleteFiles(info.names);
                 return;
@@ -257,6 +267,34 @@ namespace DavalaAdmin
         private string GetFileName(string path)
         {
             return path.Substring(path.LastIndexOf('\\')+1, path.Length - path.LastIndexOf('\\')-1);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            WebCrawler wc = new WebCrawler(this);
+            wc.ShowDialog();
+        }
+
+        private void textBoxDiscount_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var price = Convert.ToDecimal(textBoxPrice.Text);
+                var txt = Convert.ToDecimal(((TextBox)sender).Text);
+                Decimal percentage = 100 - txt;
+                textBoxDiscountAmount.Text = (price * (percentage / 100)).ToString();
+            }
+            catch
+            {
+                textBoxPrice.Text = "";
+                textBoxDiscount.Text = "";
+                textBoxDiscountAmount.Text = "";
+            }
+        }
+
+        private void buttonView_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

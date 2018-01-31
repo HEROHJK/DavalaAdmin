@@ -38,6 +38,33 @@ namespace DavalaAdmin.데이터베이쓰
             }
         }
 
+        public int InsertProductSubData(int index, string discount)
+        {
+            using (conn = new MySqlConnection(loginInfo))
+            {
+                try
+                {
+                    conn.Open();
+                    char dc = 'F';
+                    if(discount != null && discount != "")
+                    {
+                        dc = 'T';
+                    }
+                    MySqlCommand cmd = new MySqlCommand(string.Format("Insert Into davala.`ProductInfo`(productKey, discount, discountPercentage) VALUES('{0}','{1}','{2}');", index, dc, Convert.ToInt32(discount)), conn);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "Select LAST_INSERT_ID();";
+
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
+
         public bool InsertProductImages(string[] urls, int productKey)
         {
             StringBuilder cmdTxt = new StringBuilder();
@@ -75,6 +102,23 @@ namespace DavalaAdmin.데이터베이쓰
                 {
                     conn.Open();
                     MySqlCommand cmd = new MySqlCommand(string.Format("Delete From davala.`Product` Where `index` = {0}",index), conn);
+                    cmd.ExecuteNonQuery();
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        public void DeleteProductSubData(int index)
+        {
+            using (conn = new MySqlConnection(loginInfo))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(string.Format("Delete From davala.`ProductInfo` Where `index` = {0}", index), conn);
                     cmd.ExecuteNonQuery();
                 }
                 catch

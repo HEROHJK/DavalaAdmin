@@ -46,6 +46,27 @@ namespace DavalaAdmin.데이터베이쓰
             return brands;
         }
 
+        public int FindBrandIndex(string name)
+        {
+            int index = -1;
+            using (conn = new MySqlConnection(loginInfo))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(string.Format("Select `index` From davala.`Brand` Where brandName = '{0}';", name), conn);
+
+                    index = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    return index;
+                }
+                catch
+                {
+                    return index;
+                }
+            }
+        }
+
         public bool AddBrand(string name)
         {
             using (conn = new MySqlConnection(loginInfo))

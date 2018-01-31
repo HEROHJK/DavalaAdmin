@@ -101,5 +101,44 @@ namespace DavalaAdmin.데이터베이쓰
 
             return result;
         }
+
+        public int FindCategory(string name)
+        {
+            int index = -1;
+            using (conn = new MySqlConnection(loginInfo))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(string.Format("Select `index` From davala.`ProductCategory` Where name = '{0}';", name), conn);
+
+                    index = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    return index;
+                }
+                catch
+                {
+                    return index;
+                }
+            }
+        }
+
+        public int FindParentIndex(int index)
+        {
+            using (conn = new MySqlConnection(loginInfo))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand cmd = new MySqlCommand(string.Format("Select `parentIndex` From davala.`ProductCategory` Where `index` = '{0}';", index), conn);
+
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }
